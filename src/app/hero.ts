@@ -1,4 +1,7 @@
 export class Hero {
-    id: number;
+    _id: string = "as";
+    get id(): string {
+        return this._id;
+      }
     name: string;
    }

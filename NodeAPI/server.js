@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var log = require('./libs/log')(module)
-var ArticleModel = require('./libs/mongoose').ArticleModel;
+var HeroModel = require('./libs/mongoose').HeroModel;
 var config = require('./libs/config');
 var bodyParser = require('body-parser')
 
@@ -19,10 +19,10 @@ app.get('/ErrorExample', function(req, res, next) {
     next(new Error('Random error!'));
 });
 
-app.get('/api/articles', function(req, res) {
-    return ArticleModel.find(function(err, articles) {
+app.get('/api/heroes', function(req, res) {
+    return HeroModel.find(function(err, heroes) {
         if(!err) {
-            return res.send(articles);
+            return res.send(heroes);
         } else {
             res.statusCode = 500;
             log.error('Internal error(%d): %s', res.statusCode, err.message);
@@ -31,19 +31,16 @@ app.get('/api/articles', function(req, res) {
     });
 });
 
-app.post('/api/articles', function(req, res) {
-    var article = new ArticleModel({
-        title: req.body.title,
-        author: req.body.author,
-        description: req.body.description,
-        images: req.body.images
+app.post('/api/heroes', function(req, res) {
+    var heroe = new HeroModel({
+        name: req.body.name
     });
-    article.save(function(err) {
+    heroe.save(function(err) {
         if(!err) {
-            log.info('article created');
+            log.info('heroe created');
             return res.send({
                 statud: 'OK',
-                article: article
+                heroe: heroe
             });
         } else {
             if(err.name == 'ValidationError') {
@@ -58,14 +55,14 @@ app.post('/api/articles', function(req, res) {
     });
 });
 
-app.get('/api/articles/:id', function(req, res) {
-    return ArticleModel.findById(req.params.id, function (err, article) {
-        if(!article) {
+app.get('/api/heroes/:id', function(req, res) {
+    return HeroModel.findById(req.params.id, function (err, heroe) {
+        if(!heroe) {
             res.statusCode = 404;
             return res.send({ error: 'Not found' });
         }
         if (!err) {
-            return res.send({ status: 'OK', article:article });
+            return res.send({ status: 'OK', heroe:heroe });
         } else {
             res.statusCode = 500;
             log.error('Internal error(%d): %s',res.statusCode,err.message);
@@ -74,20 +71,17 @@ app.get('/api/articles/:id', function(req, res) {
     }); 
 });
 
-app.put('/api/articles/:id', function(req, res) {
-    return ArticleModel.findById(req.params.id, function (err, article) {
-        if(!article) {
+app.put('/api/heroes/:id', function(req, res) {
+    return HeroModel.findById(req.params.id, function (err, heroe) {
+        if(!heroe) {
             res.statusCode = 404;
             return res.send({ error: 'Not found' });
         }
-        article.title = req.body.title;
-        article.description = req.body.description;
-        article.author = req.body.author;
-        article.images = req.body.images;
-        return article.save(function (err) {
+        heroe.name = req.body.name;
+        return heroe.save(function (err) {
             if (!err) {
-                log.info("article updated");
-                return res.send({ status: 'OK', article:article });
+                log.info("heroe updated");
+                return res.send({ status: 'OK', heroe:heroe });
             } else { 
                 if(err.name == 'ValidationError') {
                     res.statusCode = 400;
@@ -103,15 +97,15 @@ app.put('/api/articles/:id', function(req, res) {
     });
 });
 
-app.delete('/api/articles/:id', function(req, res) {
-    return ArticleModel.findById(req.params.id, function (err, article) {
-        if(!article) {
+app.delete('/api/heroes/:id', function(req, res) {
+    return HeroModel.findById(req.params.id, function (err, heroe) {
+        if(!heroe) {
             res.statusCode = 404;
             return res.send({ error: 'Not found' });
         }
-        return article.remove(function (err) {
+        return heroe.remove(function (err) {
             if (!err) {
-                log.info("article removed");
+                log.info("heroe removed");
                 return res.send({ status: 'OK' });
             } else {
                 res.statusCode = 500;

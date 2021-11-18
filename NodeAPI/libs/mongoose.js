@@ -15,31 +15,25 @@ db.once('open', function callback() {
 
 var Schema = mongoose.Schema; //Schemas
 
-var Images = new Schema({
-    kind: {
-        type: String,
-        enum: ['thumbnail', 'detail'],
-        required: true
-    },
-    url: {
-        type: String,
-        required: true
-    }
-});
-
-var Article = new Schema({
-    title: { type: String, required: true },
-    author: { type: String, required: true },
-    description: { type: String, required: true },
-    images: { Images },
-    modified: { type: Date, default: Date.now }
+var Hero = new Schema({
+    name: { type: String, required: true }
 }); 
 
 //validation
-Article.path('title').validate(function(v){
-    return v.length > 5 && v.length < 70;
+Hero.path('name').validate(function(v){
+    return v.length > 2 && v.length < 70;
 });
 
-var ArticleModel = mongoose.model('Article', Article);
+// Duplicate the ID field.
+Hero.virtual('id').get(function(){
+    return this._id.toHexString();
+});
 
-module.exports.ArticleModel = ArticleModel;
+// Ensure virtual fields are serialised.
+Hero.set('toJSON', {
+    virtuals: true
+});
+
+var HeroModel = mongoose.model('Hero', Hero);
+
+module.exports.HeroModel = HeroModel;
