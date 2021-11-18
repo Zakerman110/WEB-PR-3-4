@@ -1,0 +1,17 @@
+{
+	"/server/*": {
+		"target": "http://localhost:1337",
+		"secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/server" : ""
+    }
+	},
+  "/api/*" : {
+    "target": "http://localhost:1337",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}
