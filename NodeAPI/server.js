@@ -62,6 +62,8 @@ app.get('/api/heroes/:id', function(req, res) {
             return res.send({ error: 'Not found' });
         }
         if (!err) {
+            // TEST TEST TEST REMOVE AFTER
+            log.info('Fetched hero');
             return res.send({ status: 'OK', heroe:heroe });
         } else {
             res.statusCode = 500;
