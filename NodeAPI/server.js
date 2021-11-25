@@ -39,7 +39,7 @@ app.post('/api/heroes', function(req, res) {
         if(!err) {
             log.info('heroe created');
             return res.send({
-                statud: 'OK',
+                status: 'OK',
                 heroe: heroe
             });
         } else {
