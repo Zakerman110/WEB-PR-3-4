@@ -1,6 +1,10 @@
 # AngularTourOfHeroes
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
+You have to laung both - angular and server
+
+To run angular - `npm start`
+
+To run server in /NodeAPI - `node server.js`
 
 ## Development server
 
